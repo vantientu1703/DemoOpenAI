@@ -60,11 +60,6 @@ struct DetailView: View {
                     }
                     .listStyle(.plain)
                     .animation(.default, value: conversation.messages)
-//                    .onChange(of: conversation) { newValue in
-//                        if let lastMessage = newValue.messages.last {
-//                            scrollViewProxy.scrollTo(lastMessage.id, anchor: .bottom)
-//                        }
-//                    }
 
                     if let error = error {
                         errorMessage(error: error)
@@ -73,68 +68,6 @@ struct DetailView: View {
                     inputBar(scrollViewProxy: scrollViewProxy)
                 }
                 .navigationTitle(conversation.type == .assistant ? "Assistant: \(currentAssistantName())" : "Chat")
-                .safeAreaInset(edge: .top) {
-                    HStack {
-                        Text(
-                            "Model: \(conversation.type == .assistant ? Model.gpt4_o_mini : selectedChatModel)"
-                        )
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                }
-                .toolbar {
-                    if conversation.type == .assistant {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-
-                            Menu {
-                                ForEach(availableAssistants, id: \.self) { item in
-                                    Button(item.name) {
-                                        print("Select assistant")
-                                        //selectedItem = item
-                                    }
-                                }
-                            } label: {
-                                Image(systemName: "eyeglasses")
-                            }
-                        }
-                    }
-                    if conversation.type == .normal {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                showsModelSelectionSheet.toggle()
-                            }) {
-                                Image(systemName: "cpu")
-                            }
-                        }
-                    }
-                }
-                .confirmationDialog(
-                    "Select model",
-                    isPresented: $showsModelSelectionSheet,
-                    titleVisibility: .visible,
-                    actions: {
-                        ForEach(DetailView.availableChatModels, id: \.self) { model in
-                            Button {
-                                selectedChatModel = model
-                            } label: {
-                                Text(model)
-                            }
-                        }
-
-                        Button("Cancel", role: .cancel) {
-                            showsModelSelectionSheet = false
-                        }
-                    },
-                    message: {
-                        Text(
-                            "View https://platform.openai.com/docs/models/overview for details"
-                        )
-                        .font(.caption)
-                    }
-                )
             }
         }
     }

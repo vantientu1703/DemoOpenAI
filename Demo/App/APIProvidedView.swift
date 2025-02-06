@@ -1,10 +1,3 @@
-//
-//  APIProvidedView.swift
-//  Demo
-//
-//  Created by Sihao Lu on 4/7/23.
-//
-
 import DemoChat
 import OpenAI
 import SwiftUI
